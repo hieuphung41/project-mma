@@ -1,0 +1,64 @@
+{
+  "expo": {
+    "name": "Sneaker",
+    "slug": "Sneaker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/shoes.png",
+    "scheme": "restate",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sneaker.myapp"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/shoes.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.sneaker.myapp"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/shoes.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "resizeMode": "cover",
+          "backgroundColor": "#ffffff",
+          "enableFullScreenImage_legacy": true
+        }
+      ],
+
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Rubik_Bold.ttf",
+            "./assets/fonts/Rubik_ExtraBold.ttf",
+            "./assets/fonts/Medium.ttf",
+            "./assets/fonts/Rubik_Light.ttf",
+            "./assets/fonts/Rubik_Regular.ttf",
+            "./assets/fonts/Rubik_SemiBold.ttf"
+          ]
+        }
+      ],
+
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.1044561486659-ggn7l5c3ssilpp8fplbje1rao6ioem9k"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
