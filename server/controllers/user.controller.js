@@ -26,7 +26,7 @@ export const getUser = asyncHandler(async (req, res, next) => {
       throw error;
     }
 
-    res.status(200).json({ success: true, data: user });
+    res.status(200).json({ success: true, user: user });
   } catch (error) {
     next(error);
   }

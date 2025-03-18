@@ -50,14 +50,16 @@ const SettingsItem = ({
 const Profile = () => {
   const router = useRouter();
   const userInfo = useSelector((state: RootState) => state.auth.user);
+
+  console.log(userInfo);
   const userId = userInfo?.user?._id;
 
   // Gọi API lấy thông tin người dùng
   const { data, isLoading, error } = useGetUserQuery(userId);
   const user = data?.user;
-  console.log('====================================');
+  console.log("====================================");
   console.log(data);
-  console.log('====================================');
+  console.log("====================================");
 
   // API logout
   const [logout] = useSignOutMutation();
@@ -80,24 +82,24 @@ const Profile = () => {
   }
 
   if (error) {
-    console.log('====================================');
+    console.log("====================================");
     console.log(error);
-    console.log('====================================');
+    console.log("====================================");
     return (
       <View className="flex-1 justify-center items-center">
         <Text className="text-red-500">Error loading profile</Text>
       </View>
     );
   }
-const navigateToCart = () => {
-  router.push("/cart");
-}
-const navigateToUserDetail =()=>{
-  router.push('/user')
-}
-const navigateToOrder =()=>{
-  router.push('/order')
-}
+  const navigateToCart = () => {
+    router.push("/cart");
+  };
+  const navigateToUserDetail = () => {
+    router.push("/user");
+  };
+  const navigateToOrder = () => {
+    router.push("/order");
+  };
   return (
     <SafeAreaView className="h-full bg-white">
       <ScrollView
@@ -106,17 +108,14 @@ const navigateToOrder =()=>{
       >
         <View className="flex flex-row items-center justify-between mt-5">
           <Text className="text-xl font-rubik-bold">Profile</Text>
-           <TouchableOpacity onPress={()=>router.navigate('/cart')}>
-                          <Image source={icons.cart} className="size-6" />
-                        </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.navigate("/cart")}>
+            <Image source={icons.cart} className="size-6" />
+          </TouchableOpacity>
         </View>
 
         <View className="flex flex-row justify-center mt-5">
           <View className="flex flex-col items-center relative mt-5">
-            <Image
-              source={avatar}
-              className="size-44 relative rounded-full"
-            />
+            <Image source={avatar} className="size-44 relative rounded-full" />
             <TouchableOpacity className="absolute bottom-11 right-2">
               <Image source={icons.edit} className="size-9" />
             </TouchableOpacity>
@@ -129,17 +128,27 @@ const navigateToOrder =()=>{
 
         <View className="flex flex-col mt-10">
           {/* <SettingsItem icon={icons.cart} title="My Cart" onPress={navigateToCart}/> */}
-          <SettingsItem icon={icons.bell} title="Notifications" onPress={()=>{}}/>
-          <SettingsItem icon={icons.calendar} title="My Orders" onPress={navigateToOrder} />
+          <SettingsItem
+            icon={icons.bell}
+            title="Notifications"
+            onPress={() => {}}
+          />
+          <SettingsItem
+            icon={icons.calendar}
+            title="My Orders"
+            onPress={navigateToOrder}
+          />
           <SettingsItem icon={icons.wallet} title="Payments" />
         </View>
 
         <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
-
-          <SettingsItem icon={icons.person} title="Profile" onPress={navigateToUserDetail}/>
+          <SettingsItem
+            icon={icons.person}
+            title="Profile"
+            onPress={navigateToUserDetail}
+          />
           <SettingsItem icon={icons.language} title="Language" />
           <SettingsItem icon={icons.info} title="Help Center" />
-
         </View>
 
         <View className="flex flex-col border-t mt-5 pt-5 border-primary-200">

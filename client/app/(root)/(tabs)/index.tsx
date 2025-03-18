@@ -34,6 +34,8 @@ const Home = () => {
 
   const user = useSelector((state: RootState) => state.auth.user);
 
+  console.log(user)
+
   // Lưu trạng thái search & category để truyền vào API
   const [filters, setFilters] = useState({
     search: params.search || "",
