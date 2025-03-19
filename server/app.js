@@ -17,6 +17,8 @@ import checkoutRouter from "./routes/checkout.routes.js";
 import addressRouters from "./routes/address.routes.js";
 import couponRouter from "./routes/coupon.routes.js";
 import adminRouter from "./routes/admin.routes.js";
+import wishlistRouter from "./routes/wishlist.routes.js";
+
 
 const app = express();
 
@@ -41,6 +43,7 @@ app.use("/api/v1/checkout", checkoutRouter);
 app.use("/api/v1/address", addressRouters);
 app.use("/api/v1/coupon", couponRouter);
 app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/wishlist", wishlistRouter);
 app.use(errorMiddleware);
 
 app.get("/", (req, res) => {
