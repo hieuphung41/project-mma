@@ -16,13 +16,18 @@ import { useRouter } from "expo-router";
 import icons from "@/constants/icons";
 import { useGetCouponsQuery } from "@/redux/api/couponApiSlice";
 import { useGetAddressListQuery } from "@/redux/api/addressApiSlice";
-import { useCreateOrderMutation } from "@/redux/api/orderApiSlice";
+import {
+  useCreateOrderMutation,
+  useGetOrdersByUserIdQuery,
+} from "@/redux/api/orderApiSlice";
 import { useCreatePaymentUrlMutation } from "@/redux/api/checkoutApiSlice";
 
 const Checkout = () => {
   const router = useRouter();
   const cartState = useSelector((state: RootState) => state.cart);
   const cart = cartState.products;
+  const userInfo = useSelector((state: RootState) => state.auth.user);
+  const userId = userInfo?.user?._id;
 
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
     null
@@ -41,6 +46,11 @@ const Checkout = () => {
   const { data: addressData } = useGetAddressListQuery();
   const [createOrder] = useCreateOrderMutation();
   const [createPaymentUrl] = useCreatePaymentUrlMutation();
+  const { data, isLoading, error, refetch } = useGetOrdersByUserIdQuery({
+    userId,
+    page: 1,
+    limit: 5,
+  });
 
   const {
     data: couponsData,
@@ -108,8 +118,6 @@ const Checkout = () => {
       code: "", // nếu cần mã thì thay đổi tại đây
     };
 
-    console.log(orderData);
-
     try {
       if (paymentMethod === "VNPAY") {
         // Gọi API VNPAY để xử lý thanh toán
@@ -124,9 +132,16 @@ const Checkout = () => {
             ...orderData,
             code: response?.data?.code, // Giả sử trả về mã thanh toán
           };
-          console.log(orderDataWithCode);
-          await createOrder(orderDataWithCode);
-          router.push("/order"); // Điều hướng đến trang đơn hàng
+          const orderResponse = await createOrder(orderDataWithCode);
+
+          if (orderResponse?.data) {
+            Alert.alert(
+              "Order created",
+              "Your order has been created successfully."
+            );
+            await refetch();
+            router.replace("/");
+          }
         } else {
           // Nếu thanh toán thất bại, quay lại trang giỏ hàng
           Alert.alert("Payment failed", "Transaction could not be completed.");
@@ -134,8 +149,16 @@ const Checkout = () => {
         }
       } else {
         // Xử lý thanh toán COD
-        await createOrder(orderData);
-        router.push("/order");
+        const orderResponse = await createOrder(orderData);
+
+        if (orderResponse?.data) {
+          Alert.alert(
+            "Order created",
+            "Your order has been created successfully."
+          );
+          await refetch();
+          router.replace("/");
+        }
       }
     } catch (error) {
       // Xử lý lỗi trong trường hợp không thể tạo đơn hàng

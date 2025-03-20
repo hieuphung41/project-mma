@@ -320,6 +320,7 @@ export const getOrderByUserId = asyncHandler(async (req, res, next) => {
     const orders = await Order.find({ user: userId })
       .skip(skip)
       .limit(limit)
+      .sort({ createdAt: -1 })
       .populate("user orderItems address coupon");
     if (!orders) {
       return res.status(404).json({

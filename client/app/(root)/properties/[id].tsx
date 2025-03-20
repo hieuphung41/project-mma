@@ -195,8 +195,8 @@ const Property = () => {
           >
             <View className="flex flex-row items-center w-full justify-between">
               <TouchableOpacity
-                onPress={() => router.back()}
-                className="flex flex-row bg-primary-200 rounded-full size-11 items-center justify-center"
+                onPress={() => router.back()} // Quay lại trang trước
+                className="flex flex-row items-center justify-center"
               >
                 <Image source={icons.backArrow} className="size-5" />
               </TouchableOpacity>

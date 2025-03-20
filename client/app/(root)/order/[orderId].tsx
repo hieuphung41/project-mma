@@ -77,7 +77,7 @@ const OrderDetail = () => {
       {/* Header with back button and title */}
       <View className="bg-white border-b border-gray-300 py-4 px-5 flex flex-row items-center justify-between">
         <TouchableOpacity
-          onPress={() => router.back()} // Quay lại trang trước
+          onPress={() => router.push("/order")} // Quay lại trang trước
           className="flex flex-row items-center justify-center"
         >
           <Image source={icons.backArrow} className="size-5" />

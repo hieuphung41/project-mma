@@ -25,6 +25,8 @@ const MyOrders = () => {
   const userInfo = useSelector((state: RootState) => state.auth.user);
   const userId = userInfo?.user?._id;
 
+  console.log(userId)
+
   // Thiết lập trạng thái phân trang
   const [currentPage, setCurrentPage] = useState(1); // Trạng thái cho trang hiện tại
   const [ordersPerPage] = useState(5); // Mỗi trang sẽ có 5 đơn hàng
@@ -158,7 +160,7 @@ const MyOrders = () => {
         }
       />
       {/* Pagination Controls */}
-      <View className="flex-row justify-between items-center py-3 px-5">
+      <View className="flex-row justify-between items-center py-3 px-5 mb-14">
         <TouchableOpacity
           onPress={handlePreviousPage}
           className="bg-primary-300 py-2 px-4 rounded-full"
