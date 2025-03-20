@@ -102,22 +102,20 @@ const Cart = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
+      <View className="bg-white border-b border-gray-300 py-4 px-5 flex flex-row items-center justify-between">
+        <TouchableOpacity
+          onPress={() => router.back()}
+          className="flex flex-row items-center justify-center"
+        >
+          <Image source={icons.backArrow} className="size-5" />
+        </TouchableOpacity>
+        <Text className="text-xl font-rubik-extrabold text-center flex-1">
+          Cart
+        </Text>
+        <View className="w-5" />
+      </View>
       <FlatList
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <View className="bg-white border-b border-gray-300 py-4 px-5 flex flex-row items-center justify-between">
-            <TouchableOpacity
-              onPress={() => router.push("/")}
-              className="flex flex-row items-center justify-center"
-            >
-              <Image source={icons.backArrow} className="size-5" />
-            </TouchableOpacity>
-            <Text className="text-xl font-rubik-extrabold text-center flex-1">
-              Cart
-            </Text>
-            <View className="w-5" />
-          </View>
-        }
         ListEmptyComponent={
           <View className="flex-1 justify-center items-center py-10">
             <Text className="text-lg font-rubik-medium text-gray-500">

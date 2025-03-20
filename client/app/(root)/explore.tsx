@@ -61,20 +61,17 @@ const Explore = () => {
         }
         ListHeaderComponent={() => (
           <View className="px-5">
-            <View className="flex flex-row items-center justify-between mt-5">
+            <View className="bg-white border-b border-gray-300 py-4 px-5 flex flex-row items-center justify-between">
               <TouchableOpacity
                 onPress={() => router.back()}
-                className="flex flex-row bg-primary-200 rounded-full size-11 items-center justify-center"
+                className="flex flex-row items-center justify-center"
               >
                 <Image source={icons.backArrow} className="size-5" />
               </TouchableOpacity>
-
-              <Text className="text-base mr-2 text-center font-rubik-medium text-black-300">
-                Search for Your Ideal Sneakers
+              <Text className="text-xl font-rubik-extrabold text-center flex-1">
+                Search for Shoes
               </Text>
-              <TouchableOpacity onPress={()=>router.navigate('/cart')}>
-                                        <Image source={icons.cart} className="size-6" />
-                                      </TouchableOpacity>
+              <View className="w-5" />
             </View>
 
             <Search />

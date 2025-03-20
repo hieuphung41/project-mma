@@ -34,8 +34,6 @@ const Home = () => {
 
   const user = useSelector((state: RootState) => state.auth.user);
 
-  console.log(user)
-
   // Lưu trạng thái search & category để truyền vào API
   const [filters, setFilters] = useState({
     search: params.search || "",
@@ -112,29 +110,23 @@ const Home = () => {
         }
         ListHeaderComponent={() => (
           <View className="px-5">
-            <View className="flex flex-row items-center justify-between mt-5">
-              <View className="flex flex-row">
-                <Image
-                  source={avatar}
-                  style={{
-                    height: 40,
-                    width: 40,
-                    borderRadius: 20,
-                    borderWidth: 1,
-                    borderColor: "#E0E0E0",
-                  }}
-                />
-                <View className="flex flex-col items-start ml-2 justify-center">
-                  <Text className="text-xs font-rubik text-black-100">
-                    {greeting}
-                  </Text>
-                  <Text className="text-base font-rubik-medium text-black-300">
-                    {user?.user.name}
-                  </Text>
-                </View>
-              </View>
-              <TouchableOpacity onPress={() => router.navigate("/cart")}>
-                <Image source={icons.cart} className="size-6" />
+            <View className="bg-white border-b border-gray-300 py-4 px-5 flex flex-row items-center justify-between">
+              {/* <TouchableOpacity
+                onPress={() => router.push("/")}
+                className="flex flex-row items-center justify-center"
+              >
+                <Image source={icons.backArrow} className="size-5" />
+              </TouchableOpacity> */}
+
+              <View className="w-5" />
+              <Text className="text-xl font-rubik-extrabold text-center flex-1">
+                Home
+              </Text>
+              <TouchableOpacity
+                onPress={() => router.push("/explore")}
+                className="flex flex-row items-center justify-center"
+              >
+                <Image source={icons.search} className="size-5" />
               </TouchableOpacity>
             </View>
 
@@ -144,46 +136,96 @@ const Home = () => {
               <Filters onFilterChange={setFilters} />
             </View>
 
-            <View className="my-5">
-              <View className="flex flex-row items-center justify-between">
-                <Text className="text-xl font-rubik-bold text-black-300">
-                  Hot Search
-                </Text>
-                <TouchableOpacity>
-                  <Text
-                    className="text-base font-rubik-bold text-primary-300"
-                    onPress={handleSeeAll}
-                  >
-                    See all
+            {products.filter((item) => item.isFeatured).length > 0 && (
+              <View className="my-5">
+                <View className="flex flex-row items-center justify-between">
+                  <Text className="text-xl font-rubik-bold text-black-300">
+                    Featured
                   </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Text
+                      className="text-base font-rubik-bold text-primary-300"
+                      onPress={handleSeeAll}
+                    >
+                      See all
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                {isLoading ? (
+                  <ActivityIndicator
+                    size="large"
+                    className="text-primary-300"
+                  />
+                ) : products.length === 0 ? (
+                  <NoResults />
+                ) : (
+                  <FlatList
+                    data={products
+                      .filter((item) => item.isFeatured)
+                      .slice(0, 5)}
+                    renderItem={({ item }) => (
+                      <FeaturedCard
+                        item={item}
+                        onPress={() => handleCardPress(item._id)}
+                      />
+                    )}
+                    keyExtractor={(item) => item._id}
+                    horizontal
+                    bounces={false}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerClassName="flex gap-5 my-5"
+                  />
+                )}
               </View>
+            )}
 
-              {isLoading ? (
-                <ActivityIndicator size="large" className="text-primary-300" />
-              ) : products.length === 0 ? (
-                <NoResults />
-              ) : (
-                <FlatList
-                  data={products}
-                  renderItem={({ item }) => (
-                    <FeaturedCard
-                      item={item}
-                      onPress={() => handleCardPress(item._id)}
-                    />
-                  )}
-                  keyExtractor={(item) => item._id}
-                  horizontal
-                  bounces={false}
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerClassName="flex gap-5 mt-5"
-                />
-              )}
+            {products.filter((item) => item.isPublished).length > 0 && (
+              <View className="my-5">
+                <View className="flex flex-row items-center justify-between">
+                  <Text className="text-xl font-rubik-bold text-black-300">
+                    Published
+                  </Text>
+                  <TouchableOpacity>
+                    <Text
+                      className="text-base font-rubik-bold text-primary-300"
+                      onPress={handleSeeAll}
+                    >
+                      See all
+                    </Text>
+                  </TouchableOpacity>
+                </View>
 
-              <Text className="text-xl font-rubik-bold text-black-300 mt-5">
-                All Products
-              </Text>
-            </View>
+                {isLoading ? (
+                  <ActivityIndicator
+                    size="large"
+                    className="text-primary-300"
+                  />
+                ) : products.length === 0 ? (
+                  <NoResults />
+                ) : (
+                  <FlatList
+                    data={products
+                      .filter((item) => item.isPublished)
+                      .slice(0, 5)}
+                    renderItem={({ item }) => (
+                      <FeaturedCard
+                        item={item}
+                        onPress={() => handleCardPress(item._id)}
+                      />
+                    )}
+                    keyExtractor={(item) => item._id}
+                    horizontal
+                    bounces={false}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerClassName="flex gap-5 my-5"
+                  />
+                )}
+              </View>
+            )}
+            <Text className="text-xl font-rubik-bold text-black-300 mt-5">
+              All Products
+            </Text>
           </View>
         )}
       />
