@@ -81,92 +81,59 @@ const Wishlist = () => {
   }
 
   return (
-    <View className="flex-1 bg-white">
-      <ScrollView
+    <SafeAreaView className="flex-1 bg-white">
+      <FlatList
         showsVerticalScrollIndicator={false}
-        contentContainerClassName="pb-32 bg-white "
-      >
-        <View className="relative w-full" style={{ height: windowHeight / 2 }}>
-          <Image
-            source={images.onboarding}
-            className="size-full"
-            style={{ height: 450 }}
-            resizeMode="cover"
-          />
-
-          <View
-            className="z-50 absolute inset-x-7"
-            style={{ top: Platform.OS === "ios" ? 70 : 20 }}
-          >
-            {/* <View className="flex flex-row items-center w-full justify-between">
-                <TouchableOpacity
-                  onPress={() => router.replace("/profile")}
-                  className="flex flex-row bg-primary-200 rounded-full size-11 items-center justify-center"
-                >
-                  <Image source={icons.backArrow} className="size-5" />
-                </TouchableOpacity>
-  
-                <View className="flex flex-row items-center gap-3">
-                  <Image
-                    source={icons.heart}
-                    className="size-7"
-                    tintColor={"#191D31"}
-                  />
-                  <Image source={icons.send} className="size-7" />
-                </View>
-              </View> */}
+        ListHeaderComponent={
+          <View className="bg-white border-b border-gray-300 py-4 px-5 flex flex-row items-center justify-between">
+            <TouchableOpacity
+              onPress={() => router.push("/")}
+              className="flex flex-row items-center justify-center"
+            >
+              <Image source={icons.backArrow} className="size-5" />
+            </TouchableOpacity>
+            <Text className="text-xl font-rubik-extrabold text-center flex-1">
+              Wishlist
+            </Text>
+            <View className="w-5" />
           </View>
-        </View>
-        <View className=" px-4">
-          <Text className="text-2xl font-rubik-bold my-5">
-            Shopping Wishlist
-          </Text>
-
-          {wishlist?.products.length === 0 ? (
-            <View className="flex-1 justify-center items-center">
-              <Text className="text-lg font-rubik-medium text-gray-500">
-                Your Wishlist is empty
+        }
+        ListEmptyComponent={
+          <View className="flex-1 justify-center items-center py-10">
+            <Text className="text-lg font-rubik-medium text-gray-500">
+              Your wishlist is empty
+            </Text>
+          </View>
+        }
+        data={wishlist?.products}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View className="flex flex-row items-center justify-between my-2 mx-4 border-b border-gray-300 pb-2">
+            <Image
+              source={{ uri: item.image }}
+              className="w-16 h-16 rounded-md"
+            />
+            <View className="flex-1 ml-4">
+              <Text className="text-lg font-rubik-medium">{item.name}</Text>
+              <Text className="text-sm text-gray-500">
+                Size: {item.size} | Color: {item.color}
+              </Text>
+              <Text className="text-primary-300 font-rubik-bold">
+                ${item.price}
               </Text>
             </View>
-          ) : (
-            <FlatList
-              data={wishlist?.products}
-              keyExtractor={(item) => item.product}
-              renderItem={({ item }) => (
-                <View className="flex flex-row items-center justify-between mb-4 border-b border-gray-300 pb-2">
-                  <Image
-                    source={{ uri: item.image }}
-                    className="w-16 h-16 rounded-md"
-                  />
-
-                  <View className="flex-1 ml-4">
-                    <Text className="text-lg font-rubik-medium">
-                      {item.name}
-                    </Text>
-                    <Text className="text-sm text-gray-500">
-                      Size: {item.size} | Color: {item.color}
-                    </Text>
-                    <Text className="text-primary-300 font-rubik-bold">
-                      ${item.price}
-                    </Text>
-                  </View>
-                  <View className="flex flex-row items-center justify-end">
-                    <TouchableOpacity
-                      onPress={() =>
-                        handleRemoveItem(item.product, item.size, item.color)
-                      }
-                      className="ml-3"
-                    >
-                      <Image source={icons.trash} className="w-6 h-6" />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-            />
-          )}
-        </View>
-      </ScrollView>
-    </View>
+            <TouchableOpacity
+              onPress={() =>
+                handleRemoveItem(item.product, item.size, item.color)
+              }
+              className="ml-3"
+            >
+              <Image source={icons.trash} className="w-6 h-6" />
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+    </SafeAreaView>
   );
 };
 

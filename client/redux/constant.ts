@@ -1,6 +1,6 @@
-// export const BASE_URL: string = "http://192.168.57.104:5500";
+export const BASE_URL: string = "http://192.168.57.109:5500";
 // export const BASE_URL: string = "http://192.168.0.101:5500";
-export const BASE_URL: string = "http://localhost:5500";
+// export const BASE_URL: string = "http://localhost:5500";
 export const AUTH_URL: string = "/api/v1/auth";
 export const USERS_URL: string = "/api/v1/users";
 export const CART_URL: string = "/api/v1/cart";
