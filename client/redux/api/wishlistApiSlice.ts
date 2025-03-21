@@ -33,16 +33,6 @@ export const wishlistApiSlice = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
-    moveToCart: builder.mutation<void, { productId: string; quantity: number }>(
-      {
-        query: (data) => ({
-          url: `${WISHLIST_URL}/move-to-cart`,
-          method: "PUT",
-          body: data,
-          credentials: "include",
-        }),
-      }
-    ),
   }),
 });
 
@@ -50,5 +40,4 @@ export const {
   useGetWishlistQuery,
   useAddToWishlistMutation,
   useRemoveFromWishlistMutation,
-  useMoveToCartMutation
 } = wishlistApiSlice;

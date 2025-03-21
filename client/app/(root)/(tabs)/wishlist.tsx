@@ -7,17 +7,15 @@ import {
   ActivityIndicator,
   Alert,
   Dimensions,
-  Platform,
-  ScrollView,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   useGetWishlistQuery,
   useRemoveFromWishlistMutation,
 } from "@/redux/api/wishlistApiSlice";
+import { useAddToCartMutation } from "@/redux/api/cartApiSlice"; // Sử dụng hook addToCart
 import icons from "@/constants/icons";
-import images from "@/constants/images";
 import { router, useRouter } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -25,15 +23,22 @@ import {
   removeFromWishlistState,
   setWishlist,
 } from "@/redux/features/wishlist/wishlistSlice";
+import { addToCartState } from "@/redux/features/cart/cartSlice";
+import { WishlistItem } from "@/interface";
 
 const Wishlist = () => {
-  // Fetch Wishlist Data
-  // const { data, isLoading, error, refetch } = useGetWishlistQuery();
   const wishlistState = useSelector((state: RootState) => state.wishlist); // Lấy từ Redux
   const { data, isLoading, error, refetch } = useGetWishlistQuery(); // Lấy từ API
   const wishlist = data?.data.wishlist;
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+
+  const [addToCart, { isLoading: isAddingToCart }] = useAddToCartMutation(); // sử dụng hook addToCart
+  const [removeFromWishlist, { isLoading: isRemoving }] =
+    useRemoveFromWishlistMutation(); // sử dụng hook removeFromWishlist
+
+  const windowHeight = Dimensions.get("window").height;
+
   useEffect(() => {
     if (data?.data?.wishlist && data.data.wishlist.products) {
       dispatch(setWishlist(data.data.wishlist)); // Gán API vào Redux store
@@ -43,11 +48,54 @@ const Wishlist = () => {
   useEffect(() => {
     refetch(); // Gọi lại API khi Redux store thay đổi
   }, [wishlistState, refetch]);
-  // const wishlist = data?.data.wishlist;
-  const windowHeight = Dimensions.get("window").height;
-  // Mutations
-  const [removeFromWishlist, { isLoading: isRemoving }] =
-    useRemoveFromWishlistMutation();
+
+  // Hàm thêm sản phẩm vào giỏ hàng và xóa khỏi wishlist
+  const handleAddToCartAndRemoveFromWishlist = async (item: WishlistItem) => {
+    try {
+      // Thêm sản phẩm vào giỏ hàng
+      await addToCart({
+        productId: item.product,
+        size: item.size,
+        color: item.color,
+        quantity: 1,
+      }).unwrap();
+
+      // Cập nhật Redux Store (giỏ hàng)
+      const cartItem = {
+        product: item.product,
+        name: item.name,
+        image: item.image,
+        price: item.price,
+        size: item.size,
+        color: item.color,
+        quantity: 1,
+      };
+      dispatch(addToCartState(cartItem));
+
+      // Xóa sản phẩm khỏi wishlist
+      await removeFromWishlist({
+        productId: item.product,
+        size: item.size,
+        color: item.color,
+      }).unwrap();
+      dispatch(
+        removeFromWishlistState({
+          productId: item.product,
+          size: item.size,
+          color: item.color,
+        })
+      );
+
+      // Làm mới lại dữ liệu wishlist
+      refetch();
+      Alert.alert("Added to cart and removed from wishlist");
+    } catch (error) {
+      Alert.alert(
+        "Error",
+        "Failed to add item to cart and remove from wishlist"
+      );
+    }
+  };
 
   // Function to remove item from Wishlist
   const handleRemoveItem = async (
@@ -94,6 +142,7 @@ const Wishlist = () => {
         </Text>
         <View className="w-5" />
       </View>
+
       <FlatList
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
@@ -120,6 +169,14 @@ const Wishlist = () => {
                 ${item.price}
               </Text>
             </View>
+
+            {/* Add to Cart and Remove from Wishlist */}
+            <TouchableOpacity
+              onPress={() => handleAddToCartAndRemoveFromWishlist(item)}
+              className="ml-3"
+            >
+              <Image source={icons.cart} className="w-6 h-6" />
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
                 handleRemoveItem(item.product, item.size, item.color)
