@@ -1,6 +1,7 @@
 import Product from "../models/product.model.js";
 import asyncHandler from "../middlewares/async.midleware.js";
 import Wishlist from "../models/wishlist.model.js";
+import Cart from "../models/cart.model.js";
 
 // Add a product to the wishlist
 export const addToWishlist = asyncHandler(async (req, res, next) => {
@@ -81,6 +82,94 @@ export const addToWishlist = asyncHandler(async (req, res, next) => {
         message: "Product already exists in wishlist",
       });
     }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Chuyển một sản phẩm từ wishlist sang cart
+export const moveToCart = asyncHandler(async (req, res, next) => {
+  try {
+    const { productId, size, color } = req.body;
+
+    // Tìm sản phẩm trong wishlist của người dùng
+    const wishlist = await Wishlist.findOne({ user: req.user._id });
+    if (!wishlist) {
+      const error = new Error("Wishlist not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    const productIndex = wishlist.products.findIndex(
+      (p) =>
+        p.product.toString() === productId &&
+        p.size === size &&
+        p.color === color
+    );
+
+    if (productIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found in wishlist",
+      });
+    }
+
+    // Lấy sản phẩm từ wishlist
+    const product = wishlist.products[productIndex];
+
+    // Kiểm tra xem sản phẩm đã có trong cart chưa
+    let cart = await Cart.findOne({ user: req.user._id });
+    if (!cart) {
+      // Nếu không có cart, tạo cart mới
+      cart = new Cart({
+        user: req.user._id,
+        products: [],
+        totalPrice: 0,
+      });
+    }
+
+    const productInCart = cart.products.find(
+      (p) =>
+        p.product.toString() === productId &&
+        p.size === size &&
+        p.color === color
+    );
+
+    // Nếu sản phẩm đã có trong cart, chỉ cần cập nhật số lượng
+    if (productInCart) {
+      productInCart.quantity += 1; // Tăng số lượng lên 1 khi đã có sản phẩm trong cart
+    } else {
+      // Nếu chưa có trong cart, thêm sản phẩm vào cart với quantity = 1
+      cart.products.push({
+        product: productId,
+        name: product.name,
+        image: product.image,
+        price: product.price,
+        size,
+        color,
+        quantity: 1, // Mặc định quantity là 1
+      });
+    }
+
+    // Cập nhật tổng giá trị của cart
+    cart.totalPrice = cart.products.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+
+    // Lưu cart và xóa sản phẩm khỏi wishlist
+    await cart.save();
+    wishlist.products.splice(productIndex, 1); // Xóa sản phẩm khỏi wishlist
+    await wishlist.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Product moved to cart successfully",
+      data: {
+        cart,
+        wishlist,
+      },
+    });
   } catch (error) {
     next(error);
   }

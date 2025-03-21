@@ -23,10 +23,11 @@ const cartSlice = createSlice({
           item.size === action.payload.size &&
           item.color === action.payload.color
       );
-      
+
       if (existingProductIndex !== -1) {
         // Nếu sản phẩm đã có trong giỏ, cập nhật số lượng
-        state.products[existingProductIndex].quantity += action.payload.quantity;
+        state.products[existingProductIndex].quantity +=
+          action.payload.quantity;
       } else {
         // Nếu sản phẩm chưa có trong giỏ, thêm mới
         state.products.push(action.payload);
@@ -42,11 +43,19 @@ const cartSlice = createSlice({
     // Cập nhật số lượng sản phẩm trong giỏ hàng
     updateCartState: (
       state,
-      action: PayloadAction<{ productId: string; size: string; color: string; quantity: number }>
+      action: PayloadAction<{
+        productId: string;
+        size: string;
+        color: string;
+        quantity: number;
+      }>
     ) => {
       const { productId, size, color, quantity } = action.payload;
       const productIndex = state.products.findIndex(
-        (item) => item.product === productId && item.size === size && item.color === color
+        (item) =>
+          item.product === productId &&
+          item.size === size &&
+          item.color === color
       );
 
       if (productIndex !== -1 && quantity > 0) {
@@ -66,7 +75,10 @@ const cartSlice = createSlice({
     ) => {
       const { productId, size, color } = action.payload;
       state.products = state.products.filter(
-        (item) => item.product !== productId || item.size !== size || item.color !== color
+        (item) =>
+          item.product !== productId ||
+          item.size !== size ||
+          item.color !== color
       );
       // Tính lại tổng giá trị của giỏ hàng
       state.totalPrice = state.products.reduce(
@@ -75,7 +87,10 @@ const cartSlice = createSlice({
       );
     },
 
-    setCart: (state, action: PayloadAction<{ products: CartItem[]; totalPrice: number }>) => {
+    setCart: (
+      state,
+      action: PayloadAction<{ products: CartItem[]; totalPrice: number }>
+    ) => {
       state.products = action.payload.products;
       state.totalPrice = action.payload.totalPrice;
     },
@@ -88,6 +103,12 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCartState, updateCartState, removeFromCartState, clearCartState , setCart} = cartSlice.actions;
+export const {
+  addToCartState,
+  updateCartState,
+  removeFromCartState,
+  clearCartState,
+  setCart,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
