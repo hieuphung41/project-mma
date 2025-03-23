@@ -84,7 +84,6 @@ const SignIn = () => {
   const handleFaceBookLogin = () => {
     Alert.alert("Facebook Login");
   };
-  
 
   const handleGoogleLogin = async () => {
     // Google sign-in logic goes here
@@ -99,18 +98,15 @@ const SignIn = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      className="flex-1 justify-center"
     >
       <SafeAreaView className="bg-white h-full">
-        <ScrollView contentContainerClassName="h-full">
-          <Image
-            source={images.onboarding}
-            className="w-full h-3/6"
-            resizeMode="contain"
-          />
+        <ScrollView
+          contentContainerStyle={{ justifyContent: "center", flex: 1 }}
+        >
           <View className="px-10">
             <Text className="text-3xl font-rubik-bold text-black-300 text-center mt-2">
-              Let's Get You Closer to {"\n"}
-              <Text className="text-primary-300">Your Ideal Appearance</Text>
+              Sign In
             </Text>
 
             <View className="mt-6">
@@ -162,42 +158,6 @@ const SignIn = () => {
               >
                 <Text className="text-center text-primary-300">
                   Not have an account? Sign Up
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View className={"flex-row items-center my-6"}>
-              <View className={"flex-1 border-b border-gray-400"} />
-              <Text className={"mx-4 text-lg text-gray-600 font-rubik"}>
-                Or Continue with
-              </Text>
-              <View className={"flex-1 border-b border-gray-400"} />
-            </View>
-            <View className="flex flex-row justify-center mt-2">
-              <TouchableOpacity
-                onPress={handleGoogleLogin}
-                className="bg-white shadow-md shadow-zinc-300 rounded-full w-1/2 py-4 mx-2 flex-row items-center justify-center"
-              >
-                <Image
-                  source={icons.google}
-                  className="w-6 h-6"
-                  resizeMode="contain"
-                />
-                <Text className="text-lg font-rubik-medium text-black-300 ml-2">
-                  Google
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={handleFaceBookLogin}
-                className="bg-white shadow-md shadow-zinc-300 rounded-full w-1/2 py-4 mx-2 flex-row items-center justify-center"
-              >
-                <Image
-                  source={icons.facebook}
-                  className="w-9 h-9"
-                  resizeMode="contain"
-                />
-                <Text className="text-lg font-rubik-medium text-black-300 ml-2">
-                  Facebook
                 </Text>
               </TouchableOpacity>
             </View>

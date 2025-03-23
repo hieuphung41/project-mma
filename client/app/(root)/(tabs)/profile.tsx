@@ -4,6 +4,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  ImageSourcePropType,
   Alert,
 } from "react-native";
 import React from "react";
@@ -17,16 +18,33 @@ import { RootState } from "@/redux/store";
 import { useSignOutMutation } from "@/redux/api/authApiSlice";
 
 interface SettingsItemProp {
+  icon: ImageSourcePropType;
   title: string;
+  onPress?: () => void;
   textStyle?: string;
+  showArrow?: boolean;
 }
 
-const SettingsItem = ({ title, textStyle }: SettingsItemProp) => (
-  <View className="flex flex-row items-center justify-between py-3">
-    <Text className={`text-lg font-rubik-medium text-black-300 ${textStyle}`}>
-      {title}
-    </Text>
-  </View>
+const SettingsItem = ({
+  icon,
+  title,
+  onPress,
+  textStyle,
+  showArrow = true,
+}: SettingsItemProp) => (
+  <TouchableOpacity
+    onPress={onPress}
+    className="flex flex-row items-center justify-between py-3"
+  >
+    <View className="flex flex-row items-center gap-3">
+      <Image source={icon} className="size-6" />
+      <Text className={`text-lg font-rubik-medium text-black-300 ${textStyle}`}>
+        {title}
+      </Text>
+    </View>
+
+    {showArrow && <Image source={icons.rightArrow} className="size-5" />}
+  </TouchableOpacity>
 );
 
 const Profile = () => {
@@ -87,15 +105,29 @@ const Profile = () => {
         </View>
 
         <View className="flex flex-col mt-10">
-          <SettingsItem title={`Name: ${user?.name || "Unknown"}`} />
-          <SettingsItem title={`Email: ${user?.email || "Unknown"}`} />
-          <SettingsItem title={`Phone: ${user?.phone || "Unknown"}`} />
+          <SettingsItem
+            title={`Name: ${user?.name || "Unknown"}`}
+            icon={icons.bell}
+            onPress={() => {}}
+          />
+          <SettingsItem
+            title={`Email: ${user?.email || "Unknown"}`}
+            icon={icons.bell}
+            onPress={() => {}}
+          />
+          <SettingsItem
+            title={`Phone: ${user?.phone || "Unknown"}`}
+            icon={icons.bell}
+            onPress={() => {}}
+          />
         </View>
 
         <View className="flex flex-col border-t mt-5 pt-5 border-primary-200">
           <SettingsItem
+            icon={icons.logout}
             title="Logout"
             textStyle="text-danger"
+            showArrow={false}
             onPress={handleLogout}
           />
         </View>
