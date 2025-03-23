@@ -32,7 +32,7 @@ const Search = () => {
   // Hàm debounce tìm kiếm
   const debouncedSearch = useDebouncedCallback((text: string) => {
     router.setParams({ search: text });
-  }, 500);
+  }, 2000);
 
   const handleSearch = (text: string) => {
     setSearch(text);

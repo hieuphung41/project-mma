@@ -324,7 +324,7 @@ const Property = () => {
 
           <View className="w-full border-t border-primary-200 pt-7 mt-5">
             <Text className="text-black-300 text-xl font-rubik-bold">
-              Overview
+              Description
             </Text>
             <Text className="text-black-200 text-base font-rubik mt-2">
               {product?.description || "No description available."}

@@ -48,6 +48,8 @@ const Home = () => {
   // Gọi API sản phẩm dựa vào `filters`
   const { data, isLoading, error, refetch } = useGetProductsQuery(filters);
 
+  console.log(data)
+
   // Cập nhật `filters` khi params thay đổi
   useEffect(() => {
     setFilters({
@@ -130,17 +132,11 @@ const Home = () => {
               </TouchableOpacity>
             </View>
 
-            <Search />
-
-            <View className="mt-5">
-              <Filters onFilterChange={setFilters} />
-            </View>
-
             {products.filter((item) => item.isFeatured).length > 0 && (
               <View className="my-5">
                 <View className="flex flex-row items-center justify-between">
                   <Text className="text-xl font-rubik-bold text-black-300">
-                    Featured
+                    Featured ({products.filter((x) => x.isFeatured).length})
                   </Text>
                   <TouchableOpacity>
                     <Text
@@ -184,7 +180,7 @@ const Home = () => {
               <View className="my-5">
                 <View className="flex flex-row items-center justify-between">
                   <Text className="text-xl font-rubik-bold text-black-300">
-                    Published
+                    Published ({products.filter((x) => x.isPublished).length})
                   </Text>
                   <TouchableOpacity>
                     <Text

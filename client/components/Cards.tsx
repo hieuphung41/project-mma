@@ -14,7 +14,7 @@ export const FeaturedCard = ({ item, onPress }: Props) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="flex flex-col items-start w-[170px] h-[240px] mt-4 px-3 py-4 rounded-lg bg-white shadow-lg shadow-black-100/70 relative"
+      className="flex flex-col items-start w-[170px] h-[280px] mt-4 px-3 py-4 rounded-lg bg-white shadow-lg shadow-black-100/70 relative"
     >
       <Image
         source={{ uri: item?.images[0] }}
@@ -25,13 +25,18 @@ export const FeaturedCard = ({ item, onPress }: Props) => {
         <Text className="text-base font-rubik-bold text-black-300">
           {item.name}
         </Text>
-        <Text className="text-xs font-rubik text-black-100">
-          {item.collections}
+        <Text
+          className="text-xs font-rubik text-black-100 mt-1"
+          numberOfLines={2}
+        >
+          {item.description}
         </Text>
-
+        <Text className="text-xs font-rubik text-black-100 mt-2">
+          Size: {item?.variants[0]?.size} | Color: {item?.variants[0]?.color}
+        </Text>
         <View className="flex flex-row items-center justify-between mt-2">
           <Text className="text-base font-rubik-bold text-primary-300">
-            ${item?.variants[0]?.price}
+            Price: ${item?.variants[0]?.price}
           </Text>
         </View>
       </View>
@@ -54,13 +59,18 @@ export const Card = ({ item, onPress }: Props) => {
         <Text className="text-base font-rubik-bold text-black-300">
           {item.name}
         </Text>
-        <Text className="text-xs font-rubik text-black-100">
-          {item.collections}
+        <Text
+          className="text-xs font-rubik text-black-100 mt-1"
+          numberOfLines={2}
+        >
+          {item.description}
         </Text>
-
+        <Text className="text-xs font-rubik text-black-100 mt-2">
+          Size: {item?.variants[0]?.size} | Color: {item?.variants[0]?.color}
+        </Text>
         <View className="flex flex-row items-center justify-between mt-2">
           <Text className="text-base font-rubik-bold text-primary-300">
-            ${item?.variants[0]?.price}
+            Price: ${item?.variants[0]?.price}
           </Text>
         </View>
       </View>

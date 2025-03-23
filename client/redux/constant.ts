@@ -11,3 +11,4 @@ export const COUPON_URL: string = "/api/v1/coupon";
 export const ADDRESS_URL: string = "/api/v1/address";
 export const CHECKOUT_URL: string = "/api/v1/checkout";
 export const WISHLIST_URL: string = "/api/v1/wishlist";
+export const BRAND_URL: string = "/api/v1/brand";

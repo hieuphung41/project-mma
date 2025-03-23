@@ -17,12 +17,25 @@ import Filters from "@/components/Filters";
 import { useGetProductsQuery } from "@/redux/api/productApiSlice";
 
 const Explore = () => {
-  const params = useLocalSearchParams<{ query?: string; filter?: string }>();
+  const params = useLocalSearchParams<{
+    query?: string;
+    filter?: string;
+    size?: string;
+    color?: string;
+    gender?: string;
+    minPrice?: string;
+    maxPrice?: string;
+  }>();
 
-  // State chứa các bộ lọc (search & category)
+  // State chứa các bộ lọc (search, category, and additional filters)
   const [filters, setFilters] = useState({
     search: params.query || "",
     category: params.filter || "",
+    size: params.size || "",
+    color: params.color || "",
+    gender: params.gender || "",
+    minPrice: params.minPrice || "",
+    maxPrice: params.maxPrice || "",
   });
 
   // Gọi API lấy danh sách sản phẩm
@@ -33,9 +46,22 @@ const Explore = () => {
     setFilters({
       search: params.query || "",
       category: params.filter || "",
+      size: params.size || "",
+      color: params.color || "",
+      gender: params.gender || "",
+      minPrice: params.minPrice || "",
+      maxPrice: params.maxPrice || "",
     });
     refetch();
-  }, [params.query, params.filter]);
+  }, [
+    params.query,
+    params.filter,
+    params.size,
+    params.color,
+    params.gender,
+    params.minPrice,
+    params.maxPrice,
+  ]);
 
   const products = data?.data.products || [];
   const handleCardPress = (id: string) => router.push(`/properties/${id}`);
