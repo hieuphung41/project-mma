@@ -25,7 +25,7 @@ const MyOrders = () => {
   const userInfo = useSelector((state: RootState) => state.auth.user);
   const userId = userInfo?.user?._id;
 
-  console.log(userId)
+  console.log(userId);
 
   // Thiết lập trạng thái phân trang
   const [currentPage, setCurrentPage] = useState(1); // Trạng thái cho trang hiện tại
@@ -160,23 +160,25 @@ const MyOrders = () => {
         }
       />
       {/* Pagination Controls */}
-      <View className="flex-row justify-between items-center py-3 px-5 mb-14">
-        <TouchableOpacity
-          onPress={handlePreviousPage}
-          className="bg-primary-300 py-2 px-4 rounded-full"
-        >
-          <Text className="text-white">Previous</Text>
-        </TouchableOpacity>
-        <Text className="text-sm">
-          Page {currentPage} of {totalPages}
-        </Text>
-        <TouchableOpacity
-          onPress={handleNextPage}
-          className="bg-primary-300 py-2 px-4 rounded-full"
-        >
-          <Text className="text-white">Next</Text>
-        </TouchableOpacity>
-      </View>
+      {totalPages >= 1 && (
+        <View className="flex-row justify-between items-center py-3 px-5 mb-14">
+          <TouchableOpacity
+            onPress={handlePreviousPage}
+            className="bg-primary-300 py-2 px-4 rounded-full"
+          >
+            <Text className="text-white">Previous</Text>
+          </TouchableOpacity>
+          <Text className="text-sm">
+            Page {currentPage} of {totalPages}
+          </Text>
+          <TouchableOpacity
+            onPress={handleNextPage}
+            className="bg-primary-300 py-2 px-4 rounded-full"
+          >
+            <Text className="text-white">Next</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
