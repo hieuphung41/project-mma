@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Sneaker",
-    "slug": "Sneaker",
+    "name": "Clothes",
+    "slug": "Clothes",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/shoes.png",
+    "icon": "./assets/images/bg.png",
     "scheme": "restate",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,7 +14,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/shoes.png",
+        "foregroundImage": "./assets/images/bg.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.sneaker.myapp"
@@ -22,19 +22,19 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/shoes.png"
+      "favicon": "./assets/images/bg.png"
     },
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "resizeMode": "cover",
-          "backgroundColor": "#ffffff",
-          "enableFullScreenImage_legacy": true
-        }
-      ],
+      // [
+      //   "expo-splash-screen",
+      //   {
+      //     "image": "./assets/images/splash-icon.png",
+      //     "resizeMode": "cover",
+      //     "backgroundColor": "#ffffff",
+      //     "enableFullScreenImage_legacy": true
+      //   }
+      // ],
 
       [
         "expo-font",
