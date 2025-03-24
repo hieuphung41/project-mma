@@ -43,7 +43,7 @@ const MyOrders = () => {
 
   const router = useRouter();
 
-  const handleOrderDetailPress = (id: string) => {
+  const handleOrderPress = (id: string) => {
     router.push(`/order/${id}`); // Điều hướng đến OrderDetail với orderId
   };
 
@@ -60,58 +60,54 @@ const MyOrders = () => {
   };
 
   const renderItem = ({ item }: { item: any }) => (
-    <View className="border-b border-gray-300 p-4">
-      <View className="flex flex-row items-center justify-between">
-        <Text className="text-xl font-semibold">{item.status}</Text>
-        <Text className="text-lg text-primary-300">
-          ${item.priceAfterDiscount}
-        </Text>
-      </View>
-      <View className="mt-2">
-        <Text className="text-sm text-gray-600">
-          Payment Method: {item.paymentMethod}
-        </Text>
-        {/* Hiển thị chi tiết địa chỉ */}
-        <Text className="text-sm text-gray-600">
-          Address: {item.address.fullName}, {item.address.location},{" "}
-          {item.address.city}, {item.address.country}
-        </Text>
-        {/* Kiểm tra xem có coupon không, nếu có thì hiển thị tên coupon và giá trị giảm giá */}
-        <Text className="text-sm text-gray-600">
-          Discount:{" "}
-          {item.coupon
-            ? item.coupon.name + " - " + item.coupon.discount + "%"
-            : "N/A"}
-        </Text>
-      </View>
-      <FlatList
-        data={item.orderItems}
-        keyExtractor={(orderItem, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View className="flex flex-row items-center mt-2">
-            <Image
-              source={{ uri: item.image || images.avatar }}
-              className="w-12 h-12 rounded-md"
-            />
-            <View className="ml-3">
-              <Text className="text-sm font-medium">{item.name}</Text>
-              <Text className="text-sm text-gray-500">
-                {item.size} | {item.color}
-              </Text>
-              <Text className="text-sm font-semibold">
-                {item.quantity} x ${item.price}
-              </Text>
+    <TouchableOpacity onPress={() => handleOrderPress(item._id)}>
+      <View className="border-b border-gray-300 p-4">
+        <View className="flex flex-row items-center justify-between">
+          <Text className="text-xl font-semibold">{item.status}</Text>
+          <Text className="text-lg text-primary-300">
+            ${item.priceAfterDiscount}
+          </Text>
+        </View>
+        <View className="mt-2">
+          <Text className="text-sm text-gray-600">
+            Payment Method: {item.paymentMethod}
+          </Text>
+          {/* Hiển thị chi tiết địa chỉ */}
+          <Text className="text-sm text-gray-600">
+            Address: {item.address.fullName}, {item.address.location},{" "}
+            {item.address.city}, {item.address.country}
+          </Text>
+          {/* Kiểm tra xem có coupon không, nếu có thì hiển thị tên coupon và giá trị giảm giá */}
+          <Text className="text-sm text-gray-600">
+            Discount:{" "}
+            {item.coupon
+              ? item.coupon.name + " - " + item.coupon.discount + "%"
+              : "N/A"}
+          </Text>
+        </View>
+        <FlatList
+          data={item.orderItems}
+          keyExtractor={(orderItem, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View className="flex flex-row items-center mt-2">
+              <Image
+                source={{ uri: item.image || images.avatar }}
+                className="w-12 h-12 rounded-md"
+              />
+              <View className="ml-3">
+                <Text className="text-sm font-medium">{item.name}</Text>
+                <Text className="text-sm text-gray-500">
+                  {item.size} | {item.color}
+                </Text>
+                <Text className="text-sm font-semibold">
+                  {item.quantity} x ${item.price}
+                </Text>
+              </View>
             </View>
-          </View>
-        )}
-      />
-      <TouchableOpacity
-        className="mt-3 bg-primary-300 py-2 px-4 rounded-full"
-        onPress={() => handleOrderDetailPress(item._id)}
-      >
-        <Text className="text-white text-center">View Details</Text>
-      </TouchableOpacity>
-    </View>
+          )}
+        />
+      </View>
+    </TouchableOpacity>
   );
 
   if (isLoading) {

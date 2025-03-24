@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useSelector } from "react-redux";
-import { useGetOrderByIdQuery } from "@/redux/api/orderApiSlice"; // Hook lấy thông tin đơn hàng
+import {
+  useGetOrderByIdQuery,
+  useDeleteOrderByIdMutation,
+  useGetOrdersByUserIdQuery,
+} from "@/redux/api/orderApiSlice"; // Thêm useDeleteOrderByIdMutation
 import { useLocalSearchParams, useRouter } from "expo-router"; // Dùng router từ expo-router thay vì navigation của react-navigation
 import images from "@/constants/images";
 import icons from "@/constants/icons";
@@ -17,7 +21,11 @@ import icons from "@/constants/icons";
 const OrderDetail = () => {
   const router = useRouter();
   const { orderId } = useLocalSearchParams<{ orderId?: string }>(); // Lấy orderId từ query params
-
+  const userInfo = useSelector((state: RootState) => state.auth.user);
+  const userId = userInfo?.user?._id;
+  // Thiết lập trạng thái phân trang
+  const [currentPage, setCurrentPage] = useState(1); // Trạng thái cho trang hiện tại
+  const [ordersPerPage] = useState(5); // Mỗi trang sẽ có 5 đơn hàng
   // Kiểm tra nếu không có orderId, return loading state hoặc lỗi
   if (!orderId) {
     return (
@@ -30,8 +38,25 @@ const OrderDetail = () => {
   }
 
   // Hook lấy thông tin đơn hàng từ API
-  const { data, isLoading, error } = useGetOrderByIdQuery(orderId);
+  const { data, isLoading, error, refetch } = useGetOrdersByUserIdQuery({
+    userId,
+    page: 1,
+    limit: 5,
+  });
+  const [deleteOrderById] = useDeleteOrderByIdMutation(); // Hook để xóa đơn hàng
+
   const order = data?.data?.order;
+
+  // Hàm hủy đơn hàng
+  const handleCancelOrder = async () => {
+    try {
+      await deleteOrderById(orderId); // Xóa đơn hàng
+      refetch(); // Tải lại thông tin đơn hàng
+      router.push("/order"); // Quay lại trang danh sách đơn hàng
+    } catch (err) {
+      console.log("Error cancelling order:", err);
+    }
+  };
 
   // Render một item trong danh sách orderItems
   const renderOrderItem = ({ item }: { item: any }) => (
@@ -135,7 +160,7 @@ const OrderDetail = () => {
       <View className="m-4">
         <Text className="text-sm text-gray-600">
           Discount: {order?.coupon?.name || "N/A"} (Expires:{" "}
-          {order?.coupon?.expiry})
+          {order?.coupon?.expiry.split("T")[0]})
         </Text>
       </View>
 
@@ -162,6 +187,14 @@ const OrderDetail = () => {
             : "Not Delivered"}
         </Text>
       </View>
+
+      {/* Nút hủy đơn hàng */}
+      <TouchableOpacity
+        className="m-4 bg-red-500 py-2 px-4 rounded-full"
+        onPress={handleCancelOrder}
+      >
+        <Text className="text-white text-center">Cancel Order</Text>
+      </TouchableOpacity>
 
       {/* Nút quay lại trang danh sách đơn hàng */}
       <TouchableOpacity
