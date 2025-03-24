@@ -87,17 +87,30 @@ const Profile = () => {
 
   return (
     <SafeAreaView className="h-full bg-white">
+      <View className="bg-white border-b border-gray-300 py-4 px-5 flex flex-row items-center justify-between">
+        <TouchableOpacity
+          onPress={() => router.back()} // Quay lại trang trước
+          className="flex flex-row items-center justify-center"
+        >
+          <Image source={icons.backArrow} className="size-5" />
+        </TouchableOpacity>
+        <Text className="text-xl font-rubik-extrabold text-center flex-1">
+          Order History
+        </Text>
+        {/* Tạo một View rỗng để căn chỉnh cho nút back và tiêu đề */}
+        <View className="w-5" />
+      </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerClassName="pb-32 px-7"
       >
-        <View className="flex flex-row items-center justify-between mt-5">
-          <Text className="text-xl font-rubik-bold">Profile</Text>
-        </View>
 
         <View className="flex flex-row justify-center mt-5">
           <View className="flex flex-col items-center relative mt-5">
-            <Image source={avatar} className="size-44 relative rounded-full" />
+            <Image
+              source={icons.dog}
+              className="size-44 relative rounded-full"
+            />
             <Text className="text-2xl font-rubik-bold mt-2">
               {user?.name || "Unknown User"}
             </Text>
@@ -107,17 +120,17 @@ const Profile = () => {
         <View className="flex flex-col mt-10">
           <SettingsItem
             title={`Name: ${user?.name || "Unknown"}`}
-            icon={icons.bell}
+            icon={icons.chat}
             onPress={() => {}}
           />
           <SettingsItem
             title={`Email: ${user?.email || "Unknown"}`}
-            icon={icons.bell}
+            icon={icons.chat}
             onPress={() => {}}
           />
           <SettingsItem
             title={`Phone: ${user?.phone || "Unknown"}`}
-            icon={icons.bell}
+            icon={icons.chat}
             onPress={() => {}}
           />
         </View>
