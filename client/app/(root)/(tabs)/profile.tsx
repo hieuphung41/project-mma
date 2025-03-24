@@ -43,7 +43,7 @@ const SettingsItem = ({
       </Text>
     </View>
 
-    {showArrow && <Image source={icons.rightArrow} className="size-5" />}
+    {/* {showArrow && <Image source={icons.rightArrow} className="size-5" />} */}
   </TouchableOpacity>
 );
 
