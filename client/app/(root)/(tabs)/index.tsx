@@ -48,7 +48,7 @@ const Home = () => {
   // Gọi API sản phẩm dựa vào `filters`
   const { data, isLoading, error, refetch } = useGetProductsQuery(filters);
 
-  console.log(data)
+  console.log(data);
 
   // Cập nhật `filters` khi params thay đổi
   useEffect(() => {
@@ -93,6 +93,25 @@ const Home = () => {
 
   return (
     <SafeAreaView className="h-full bg-white">
+      <View className="bg-white border-b border-gray-300 py-4 px-5 flex flex-row items-center justify-between">
+        {/* <TouchableOpacity
+                onPress={() => router.push("/")}
+                className="flex flex-row items-center justify-center"
+              >
+                <Image source={icons.backArrow} className="size-5" />
+              </TouchableOpacity> */}
+
+        <View className="w-5" />
+        <Text className="text-xl font-rubik-extrabold text-center flex-1">
+          Home
+        </Text>
+        <TouchableOpacity
+          onPress={() => router.push("/explore")}
+          className="flex flex-row items-center justify-center"
+        >
+          <Image source={icons.search} className="size-5" />
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={products}
         numColumns={2}
@@ -112,26 +131,6 @@ const Home = () => {
         }
         ListHeaderComponent={() => (
           <View className="px-5">
-            <View className="bg-white border-b border-gray-300 py-4 px-5 flex flex-row items-center justify-between">
-              {/* <TouchableOpacity
-                onPress={() => router.push("/")}
-                className="flex flex-row items-center justify-center"
-              >
-                <Image source={icons.backArrow} className="size-5" />
-              </TouchableOpacity> */}
-
-              <View className="w-5" />
-              <Text className="text-xl font-rubik-extrabold text-center flex-1">
-                Home
-              </Text>
-              <TouchableOpacity
-                onPress={() => router.push("/explore")}
-                className="flex flex-row items-center justify-center"
-              >
-                <Image source={icons.search} className="size-5" />
-              </TouchableOpacity>
-            </View>
-
             {products.filter((item) => item.isFeatured).length > 0 && (
               <View className="my-5">
                 <View className="flex flex-row items-center justify-between">

@@ -95,7 +95,7 @@ const Profile = () => {
           <Image source={icons.backArrow} className="size-5" />
         </TouchableOpacity>
         <Text className="text-xl font-rubik-extrabold text-center flex-1">
-          Order History
+          Profile
         </Text>
         {/* Tạo một View rỗng để căn chỉnh cho nút back và tiêu đề */}
         <View className="w-5" />

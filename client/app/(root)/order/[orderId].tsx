@@ -17,6 +17,7 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router"; // Dùng router từ expo-router thay vì navigation của react-navigation
 import images from "@/constants/images";
 import icons from "@/constants/icons";
+import { RootState } from "@/redux/store";
 
 const OrderDetail = () => {
   const router = useRouter();
